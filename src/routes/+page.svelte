@@ -3,14 +3,12 @@
   import type { Midi } from "@tonejs/midi/dist/Midi.js";
 
   async function getMidi(url: string): Promise<Midi> {
-    const midi = await (await import("@tonejs/midi")).Midi.fromUrl(url);
-    console.log("midi", midi);
-    return midi;
+    return await (await import("@tonejs/midi")).Midi.fromUrl(url);
   }
 </script>
 
 {#await getMidi("/twinkle_twinkle.mid")}
   ...loading
-{:then { tracks, duration }}
-  <Tempo track={tracks[0]} {duration} />
+{:then { tracks, durationTicks, header }}
+  <Tempo track={tracks[0]} {durationTicks} ppq={header.ppq} />
 {/await}
